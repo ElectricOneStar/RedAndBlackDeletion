@@ -466,7 +466,7 @@ void add (Node** header, Node* parent, int* in){
    }
 void ReplaceNode(Node* n, Node* child) {
   (*child).setParent((*n).getParent());
-  if (n == (*(*(*n).getParent()).getLeft())) {
+  if (n == (*(*n).getParent()).getLeft()) {
     (*(*n).getParent()).setLeft(child);
   } else {
     (*(*n).getParent()).setRight(child);
@@ -475,8 +475,8 @@ void ReplaceNode(Node* n, Node* child) {
 
 void DeleteOneChild(Node* n) {
   // Precondition: n has at most one non-leaf child.
-  Node* child = ((*n).getRight() == nullptr) ? n.getLeft() : n.getRight();
-  assert(child);
+  Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight();
+  // assert(child);
 
   ReplaceNode(n, child);
   if ((*n).getColor() == 1) {
@@ -499,10 +499,10 @@ void DeleteCase2(Node* n) {
   if ((*s).getColor() == 0) {
     (*(*n).getParent()).setColor(0);
     (*s).setColor(1);
-    if (n == (*(*(*n).getParent()).getLeft())) {
-      RotateLeft((*n).getParent());
+    if (n == (*(*n).getParent()).getLeft()) {
+      // RotateLeft((*n).getParent());
     } else {
-      RotateRight((*n).getParent());
+      //RotateRight((*n).getParent());
     }
   }
   DeleteCase3(n);
@@ -539,18 +539,18 @@ void DeleteCase5(Node* n) {
     // The following statements just force the red to be on the left of the
     // left of the parent, or right of the right, so case six will rotate
     // correctly.
-   if ((n == (*(*(*n).getParent()).getLeft())) && ((*(*s).getRight()).getColor() == 1) &&
+   if ((n == (*(*n).getParent()).getLeft()) && ((*(*s).getRight()).getColor() == 1) &&
        ((*(*s).getLeft()).getColor() == 0)) {
       // This last test is trivial too due to cases 2-4.
      (*s).setColor(0);
      (*(*s).getLeft()).setColor(1);
-      RotateRight(s);
+     //RotateRight(s);
    } else if ((n == (*(*n).getParent()).getRight()) && ((*(*s).getLeft()).getColor() == 1) &&
 	      ((*(*s).getRight()).getColor() == 0)) {
       // This last test is trivial too due to cases 2-4.
      (*s).setColor(0);
      (*(*s).getRight()).setColor(1);
-      RotateLeft(s);
+     // RotateLeft(s);
     }
   }
   DeleteCase6(n);
@@ -561,26 +561,26 @@ void DeleteCase6(Node* n) {
   (*s).setColor((*(*n).getParent()).getColor());
   (*(*n).getParent()).setColor(1);
 
-  if (n == (*(*(*n).getParent()).getLeft())) {
+  if (n == (*(*n).getParent()).getLeft()) {
     (*(*s).getRight()).setColor(1);
-    RotateLeft((*n).getParent());
+    //RotateLeft((*n).getParent());
   } else {
     (*(*s).getLeft()).setColor(1);
-    RotateRight((*n).getParent());
+    //  RotateRight((*n).getParent());
   }
 }
 
 Node* GetSibling(Node* n) {
-  Node* p = GetParent(n);
+  Node* p = (*n).getParent();
 
   // No parent means no sibling.
   if (p == nullptr) {
     return nullptr;
   }
 
-  if (n == (*(*p).getLeft())) {
+  if (n == (*p).getLeft()) {
     return (*p).getRight();
   } else {
-    return (*p).getleft();
+    return (*p).getLeft();
   }
 }
