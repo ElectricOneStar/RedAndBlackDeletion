@@ -44,8 +44,10 @@ void DeleteCase4(Node* n);
 void DeleteCase5(Node* n);
 void DeleteCase6(Node* n);
 Node* GetSibling(Node* n);
+void RotateRight2(Node* n);
 //Node* GetSibling(Node* n);
-int main(){ // initialization of variables
+  void RotateLeft2(Node* n);
+  int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
   char* inputType = new char[20]; // initializing variables
@@ -174,7 +176,9 @@ int main(){ // initialization of variables
     cout << "Added" << endl;
   }
     if(strcmp(inputFunction, "DELETE") == 0){ // delete function that deletes a node form tree
-      cout << "I will finish this in the next part" << endl;
+       DeleteOneChild((*header).getRight());
+       // DeleteOneChild(header);
+      cout << "deleted" << endl;
     }
 
     if(strcmp(inputFunction, "SEARCH") == 0){ // function that searches the binary tree and checks if a node exists or not
@@ -477,37 +481,46 @@ void DeleteOneChild(Node* n) {
   // Precondition: n has at most one non-leaf child.
   Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight();
   // assert(child);
-
+  
   ReplaceNode(n, child);
+  cout << "here";
   if ((*n).getColor() == 1) {
+    cout << "there" << endl;
     if ((*child).getColor() == 0) {
+      cout << "DN1" << endl;
       (*child).setColor(1);
     } else {
+      cout << "D1";
       DeleteCase1(child);
+
     }
   }
+  cout << "lol" << endl;
   free(n);
 }
 void DeleteCase1(Node* n) {
+  cout << "1";
   if ((*n).getParent() != nullptr) {
     DeleteCase2(n);
   }
 }
 void DeleteCase2(Node* n) {
+  cout << "2";
   Node* s = GetSibling(n);
 
   if ((*s).getColor() == 0) {
     (*(*n).getParent()).setColor(0);
     (*s).setColor(1);
     if (n == (*(*n).getParent()).getLeft()) {
-      // RotateLeft((*n).getParent());
+      RotateLeft2((*n).getParent());
     } else {
-      //RotateRight((*n).getParent());
+      RotateRight2((*n).getParent());
     }
   }
   DeleteCase3(n);
 }
 void DeleteCase3(Node* n) {
+  cout << "3";
   Node* s = GetSibling(n);
 
   if (((*(*n).getParent()).getColor() == 1) && ((*s).getColor() == 1) &&
@@ -519,6 +532,7 @@ void DeleteCase3(Node* n) {
   }
 }
 void DeleteCase4(Node* n) {
+cout << "4";
   Node* s = GetSibling(n);
   
   if (((*(*n).getParent()).getColor() == 0) && ((*s).getColor() == 1) &&
@@ -530,7 +544,8 @@ void DeleteCase4(Node* n) {
   }
 }
 void DeleteCase5(Node* n) {
- Node* s = GetSibling(n);
+cout << "5";
+  Node* s = GetSibling(n);
 
   // This if statement is trivial, due to case 2 (even though case 2 changed
   // the sibling to a sibling's child, the sibling's child can't be red, since
@@ -544,18 +559,19 @@ void DeleteCase5(Node* n) {
       // This last test is trivial too due to cases 2-4.
      (*s).setColor(0);
      (*(*s).getLeft()).setColor(1);
-     //RotateRight(s);
+      RotateRight2(s);
    } else if ((n == (*(*n).getParent()).getRight()) && ((*(*s).getLeft()).getColor() == 1) &&
 	      ((*(*s).getRight()).getColor() == 0)) {
       // This last test is trivial too due to cases 2-4.
      (*s).setColor(0);
      (*(*s).getRight()).setColor(1);
-     // RotateLeft(s);
+     RotateLeft2(s);
     }
   }
   DeleteCase6(n);
 }
 void DeleteCase6(Node* n) {
+  cout << "6";
   Node* s = GetSibling(n);
 
   (*s).setColor((*(*n).getParent()).getColor());
@@ -563,10 +579,10 @@ void DeleteCase6(Node* n) {
 
   if (n == (*(*n).getParent()).getLeft()) {
     (*(*s).getRight()).setColor(1);
-    //RotateLeft((*n).getParent());
+        RotateLeft2((*n).getParent());
   } else {
     (*(*s).getLeft()).setColor(1);
-    //  RotateRight((*n).getParent());
+        RotateRight2((*n).getParent());
   }
 }
 
@@ -584,3 +600,55 @@ Node* GetSibling(Node* n) {
     return (*p).getLeft();
   }
 }
+
+void RotateLeft2(Node* n) {
+  Node* nnew = (*n).getRight();
+  Node* p = (*n).getParent();
+  // assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
+                            // they cannot become internal nodes.
+  (*n).setRight((*nnew).getLeft());
+  (*nnew).setLeft(n);
+  (*n).setParent(nnew);
+  // Handle other child/parent pointers.
+  if ((*n).getRight() != nullptr) {
+    (*(*n).getRight()).setParent(n);
+  }
+
+  // Initially n could be the root.
+  if (p != nullptr) {
+    if (n == (*p).getLeft()) {
+      (*p).setLeft(nnew);
+    } else if (n == (*p).getRight()) {
+      (*p).setRight(nnew);
+    }
+  }
+  (*nnew).setParent(p);
+}
+
+void RotateRight2(Node* n) {
+  Node* nnew = (*n).getLeft();
+  Node* p = (*n).getParent();
+  //assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
+                            // they cannot become internal nodes.
+
+  (*n).setLeft((*nnew).getRight());
+  (*nnew).setRight(n);
+  (*n).setParent(nnew);
+
+  // Handle other child/parent pointers.
+  if ((*n).getLeft() != nullptr) {
+    (*(*n).getLeft()).setParent(n);
+  }
+
+  // Initially n could be the root.
+  if (p != nullptr) {
+    if (n == (*p).getLeft()) {
+      (*p).setLeft(nnew);
+    } else if (n == (*p).getRight()) {
+      (*p).setRight(nnew);
+    }
+  }
+  (*nnew).setParent(p);
+}
+
+

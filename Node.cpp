@@ -13,7 +13,7 @@ Node::Node(){ // constructor
   left = NULL;
   //pdata = NULL;
   parent = NULL;
-  color = 0;
+  color = 0; // red
 }
 Node::~Node(){ // destructor
 
