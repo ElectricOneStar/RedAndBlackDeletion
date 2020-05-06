@@ -14,6 +14,7 @@ https://www.andrew.cmu.edu/user/mm6/95-771/examples/RedBlackTreeProject/dist/jav
 #include "Node.h"
 using namespace std; // functions below
 int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parced); // functions
+
 void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
 //void Add(Node* header, Node* add);
 //void Subtract();
@@ -47,7 +48,9 @@ Node* GetSibling(Node* n);
 void RotateRight2(Node* n);
 //Node* GetSibling(Node* n);
   void RotateLeft2(Node* n);
-  int main(){ // initialization of variables
+//Node SearchReturn(Node header, int* searchData);
+void SearchReturn(Node header, int* searchData, Node* deleteNode);
+int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
   char* inputType = new char[20]; // initializing variables
@@ -80,6 +83,7 @@ void RotateRight2(Node* n);
   Node* Parent = new Node;
   Node* Uncle = new Node;
   Node* GrandParent = new Node;
+  int* deleteValue = new int;
   /*
   int* ones = new int;
   int* twos = new int;
@@ -176,8 +180,21 @@ void RotateRight2(Node* n);
     cout << "Added" << endl;
   }
     if(strcmp(inputFunction, "DELETE") == 0){ // delete function that deletes a node form tree
-       DeleteOneChild((*header).getRight());
-       // DeleteOneChild(header);
+      cout << "please enter the value of the node that you want to delete" << endl;
+      cin >> (*deleteValue);
+      // cin.get(deleteValue, 20);
+      // cin.ignore();
+      //cin.clear();
+
+      cout << "herez" << endl;
+      //cout << (*SearchReturn((*header), deleteValue).getData()) << endl;
+      Node* deleteNode = new Node;
+      SearchReturn((*header), deleteValue, deleteNode);
+      cout << (*(*deleteNode).getData()) << endl;
+      cout << "here" << endl;
+      // DeleteOneChild(SearchReturn(header, deleteValue));
+      DeleteOneChild(deleteNode);
+      // DeleteOneChild(header);
       cout << "deleted" << endl;
     }
 
@@ -479,7 +496,10 @@ void ReplaceNode(Node* n, Node* child) {
 
 void DeleteOneChild(Node* n) {
   // Precondition: n has at most one non-leaf child.
-  Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight();
+  cout << "lolz" << endl;
+   Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight();
+  // Node* child = (*n).getRight();
+  //Node* child = (*n).getRight();
   // assert(child);
   
   ReplaceNode(n, child);
@@ -496,6 +516,8 @@ void DeleteOneChild(Node* n) {
     }
   }
   cout << "lol" << endl;
+  //temp
+  // (*child).setLeft((*n).getRight());
   free(n);
 }
 void DeleteCase1(Node* n) {
@@ -652,3 +674,47 @@ void RotateRight2(Node* n) {
 }
 
 
+void SearchReturn(Node header, int* searchData, Node* deleteNode){ // this function searches the tree for a node
+  //cout << "search" << endl;
+  if((*header.getData()) == (*searchData)){ // THIS IS THE NODE
+    //cout << "return this" << (*header.getData()) << endl;
+    //   Node* replace = new Node;
+    //return header;
+    (*deleteNode) = header;
+    // return replace;
+    //(*exists) = true;
+       }
+
+  if(header.getRight() != NULL && (*searchData) > (*header.getData())){ // not the node search rihgt
+    SearchReturn((*header.getRight()), searchData, deleteNode);
+       }
+  //if((*(*header).getData()) == (*searchData)){
+      //(*exists) = true;
+  //   }
+    if(header.getLeft() != NULL && (*searchData) <= (*header.getData())){ // not the node so search left
+      SearchReturn((*header.getLeft()), searchData, deleteNode);
+       }
+}
+
+/*						\
+&&
+      ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getCo\
+lor() == 1)) {
+    (*s).setColor(0);
+    (*(*n).getParent()).setColor(1);
+  } else {
+    DeleteCase5(n);
+  }
+}
+void DeleteCase5(Nod\
+&&
+      ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getCo\
+lor() == 1)) {
+    (*s).setColor(0);
+    (*(*n).getParent()).setColor(1);
+  } else {
+    DeleteCase5(n);
+  }
+}
+void DeleteCase5(Node* n) {
+*/
