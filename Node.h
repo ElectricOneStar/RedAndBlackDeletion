@@ -9,6 +9,8 @@ Header Node file by Andrew Thomas 3/19/20. This is a node with a right and left 
 //#include <cstdlib>
 #include <iostream> 
 #include<cstring>
+#include <cstdlib>
+
 using namespace std;
 class Node{
  public:
