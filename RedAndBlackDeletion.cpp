@@ -202,6 +202,7 @@ int main(){ // initialization of variables
       DeleteOneChild(deleteNode, header);
       //  DeleteOneChild((*header).getRight(), header);
       //  fixIssue(&header, (*header).getRight());
+      //  delete deleteNode;
       cout << "deleted" << endl;
 	}
 	if((*exists) == false){ // it does not exist
@@ -565,7 +566,10 @@ void DeleteOneChild(Node* n, Node* header) { // this funciton deletest the node 
   //cout << "lol" << endl;
   //temp
   // (*child).setLeft((*n).getRight());
+  
   free(n);
+  // delete n;
+  //delete child;
 }
 void DeleteCase1(Node* n) { // case 1
   // cout << "1";
@@ -767,12 +771,15 @@ void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
     // cout << "h1" << endl;
      if((*ADeleteValue) > (*DeleteValue)){ // delete the node
 	//cout << "h3" << endl;
-	(*header).setRight(NULL);
+       delete (*header).getRight(); // deletes the node
+       (*header).setRight(NULL);
     }
       else{
       //cout << "h4" << endl;
-    (*header).setLeft(NULL);
-    }
+	delete (*header).getLeft(); // deletes the node
+	(*header).setLeft(NULL);
+    
+      }
       //  cout << "h5" << endl;
       return;
   }
