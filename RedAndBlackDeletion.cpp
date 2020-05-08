@@ -52,6 +52,7 @@ Node* SearchReturn2(Node* header, int* searchData);
 //Node SearchReturn(Node header, int* searchData);
 void SearchReturn(Node header, int* searchData, Node* deleteNode);
 void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue);
+void ACase2(Node* header, int*  DeleteValue, int* ADeleteValue);
 int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
@@ -548,6 +549,23 @@ void DeleteOneChild(Node* n, Node* header) { // this funciton deletest the node 
  (*n).setParent(NULL);
  return;
    }
+  if((*n).getLeft() != NULL && (*n).getRight() != NULL){
+    //cout << "here" << endl;
+    ACase2( header,  (*(*n).getParent()).getData(), (*n).getData()); // do alternate case 2
+    // (*n).setParent(NULL);
+    // temp
+    /*
+          cout << (*(*header).getData()) << endl;
+       cout << (*(*(*header).getRight()).getData()) << endl;
+       cout << (*(*(*(*header).getRight()).getRight()).getData()) << endl;
+       cout << (*(*(*header).getLeft()).getData()) << endl;
+       cout << "nubs" << endl;
+    */
+ // cout << (*(*(*(*header).getRight()).getLeft()).getData()) << endl;
+       // cout << (*(*(*(*(*header).getRight()).getRight()).getLeft()).getData()) << endl;
+       //cout << (*(*(*(*(*header).getRight()).getRight()).getRight()).getData()) << endl;
+    return;
+  }
    
   //cout << "herezz" << endl;
    ReplaceNode(n, child); // replace the node with the child
@@ -769,7 +787,8 @@ void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
     //(*header).setColor(0);
     // cout << "here" << endl;
     // cout << "h1" << endl;
-     if((*ADeleteValue) > (*DeleteValue)){ // delete the node
+    
+    if((*ADeleteValue) > (*DeleteValue)){ // delete the node
 	//cout << "h3" << endl;
        delete (*header).getRight(); // deletes the node
        (*header).setRight(NULL);
@@ -783,6 +802,82 @@ void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
       //  cout << "h5" << endl;
       return;
   }
+  // cout << "fin" << endl;
+
+   if((*DeleteValue) <= (*(*header).getData())){
+    ACase1((*header).getLeft(), DeleteValue, ADeleteValue);
+    }
+  else{
+    ACase1((*header).getRight(), DeleteValue, ADeleteValue);
+  }
+  
+}
+void ACase2(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate case 2
+  //  cout << "inhere" << endl;
+  if((*(*header).getData()) == (*DeleteValue)){ // THIS IS NODE
+    //cout << "to left" << endl;
+    //(*header).setColor(0);
+    // cout << "here" << endl;
+    // cout << "h1" << endl;
+    
+     if((*ADeleteValue) > (*DeleteValue)){ // delete the node
+       //   cout << "here" << endl;
+       Node* temp = new Node;
+       (*temp) = (*(*(*header).getRight()).getRight());
+       (*(*header).getRight()).setRight(NULL);
+       (*header).setRight((*(*header).getRight()).getLeft());
+       (*(*header).getRight()).setColor(1);
+       // (*(*(*header).getRight()).getRight()).setColor(0);
+       (*(*header).getRight()).setRight(temp);
+       cout << (*(*header).getData()) << endl;
+       cout << (*(*(*header).getRight()).getData()) << endl;
+       cout << (*(*(*(*header).getRight()).getRight()).getData()) << endl;
+       //cout << "h3" << endl;
+       //delete (*header).getRight(); // deletes the node
+       //(*header).setRight(NULL);
+    }
+      else{
+	cout << "herez" << endl;
+	       Node* temp = new Node;
+       (*temp) = (*(*(*header).getLeft()).getRight());
+       (*header).setLeft((*(*header).getLeft()).getLeft());
+       (*(*header).getLeft()).setColor(1);
+       (*(*header).getLeft()).setRight(temp);
+
+      //cout << "h4" << endl;
+	//delete (*header).getLeft(); // deletes the node
+	//(*header).setLeft(NULL);
+    
+      }
+      //  cout << "h5" << endl;
+      
+    
+    return;
+  }
+  /*
+  if((*(*(*header).getRight()).getData()) == (*DeleteValue)){ // THIS IS NODE
+    //(*header).setColor(0);
+    cout << "to right" << endl;
+    // cout << "here" << endl;
+    // cout << "h1" << endl;
+    /*
+     if((*ADeleteValue) > (*DeleteValue)){ // delete the node
+	//cout << "h3" << endl;
+       delete (*header).getRight(); // deletes the node
+       (*header).setRight(NULL);
+    }
+      else{
+      //cout << "h4" << endl;
+	delete (*header).getLeft(); // deletes the node
+	(*header).setLeft(NULL);
+    
+      }
+      //  cout << "h5" << endl;
+      */
+  /*
+    return;
+  }
+  */
   // cout << "fin" << endl;
 
    if((*DeleteValue) <= (*(*header).getData())){
