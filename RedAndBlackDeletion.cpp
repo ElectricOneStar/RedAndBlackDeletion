@@ -823,6 +823,8 @@ void ACase2(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
      if((*ADeleteValue) > (*DeleteValue)){ // delete the node
        //   cout << "here" << endl;
        Node* temp = new Node;
+       Node* deletethis = new Node;
+       (*deletethis) = (*(*header).getRight());
        (*temp) = (*(*(*header).getRight()).getRight());
        (*(*header).getRight()).setRight(NULL);
        (*header).setRight((*(*header).getRight()).getLeft());
@@ -832,6 +834,7 @@ void ACase2(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
        cout << (*(*header).getData()) << endl;
        cout << (*(*(*header).getRight()).getData()) << endl;
        cout << (*(*(*(*header).getRight()).getRight()).getData()) << endl;
+       delete deletethis;
        //cout << "h3" << endl;
        //delete (*header).getRight(); // deletes the node
        //(*header).setRight(NULL);
@@ -839,11 +842,14 @@ void ACase2(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
       else{
 	cout << "herez" << endl;
 	       Node* temp = new Node;
-       (*temp) = (*(*(*header).getLeft()).getRight());
+	            Node* deletethis = new Node;
+       (*deletethis) = (*(*header).getLeft());
+
+	       (*temp) = (*(*(*header).getLeft()).getRight());
        (*header).setLeft((*(*header).getLeft()).getLeft());
        (*(*header).getLeft()).setColor(1);
        (*(*header).getLeft()).setRight(temp);
-
+        delete deletethis;
       //cout << "h4" << endl;
 	//delete (*header).getLeft(); // deletes the node
 	//(*header).setLeft(NULL);
