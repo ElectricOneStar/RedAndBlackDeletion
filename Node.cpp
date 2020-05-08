@@ -5,6 +5,8 @@ Node cpp file that has a right and left node. It also has a data value. There ar
 //#include <cstdlib>
 
 //#include <cstdlib>
+#include <cstdlib>
+
 #include<cstring>
 #include "Node.h"
 using namespace std;
