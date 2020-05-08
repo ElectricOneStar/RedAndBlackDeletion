@@ -190,6 +190,9 @@ int main(){ // initialization of variables
 
       //  cout << "herez" << endl;
       //cout << (*SearchReturn((*header), deleteValue).getData()) << endl;
+      	Search(header, deleteValue, exists);
+	if((*exists) == true){ // it exists
+
       Node* deleteNode = new Node;
       SearchReturn((*header), deleteValue, deleteNode);
       //xcout << (*(*deleteNode).getData()) << endl;
@@ -200,7 +203,12 @@ int main(){ // initialization of variables
       //  DeleteOneChild((*header).getRight(), header);
       //  fixIssue(&header, (*header).getRight());
       cout << "deleted" << endl;
-    }
+	}
+	if((*exists) == false){ // it does not exist
+	  cout << (*deleteValue) << " Does not exist in the tree" << endl;
+	}
+	(*exists) = false;
+	}
 
     if(strcmp(inputFunction, "SEARCH") == 0){ // function that searches the binary tree and checks if a node exists or not
 	//cout << "search" << endl;
@@ -752,7 +760,7 @@ Node* SearchReturn2(Node* header, int* searchData){ // this function searches th
        }
 }
 void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate case 1
-  cout << "inhere" << endl;
+  //  cout << "inhere" << endl;
   if((*(*header).getData()) == (*DeleteValue)){ // THIS IS NODE
     //(*header).setColor(0);
     // cout << "here" << endl;
