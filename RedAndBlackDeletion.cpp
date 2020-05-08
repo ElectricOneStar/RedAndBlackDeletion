@@ -13,6 +13,7 @@ https://www.andrew.cmu.edu/user/mm6/95-771/examples/RedBlackTreeProject/dist/jav
 #include<fstream>
 #include "Node.h"
 using namespace std; // functions below
+// Node* temp = new Node;
 int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parced); // functions
 
 void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
@@ -801,6 +802,7 @@ void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue, Node* ogHeader){
     //(*header).setColor(0);
     // cout << "here" << endl;
     // cout << "h1" << endl;
+    /*
     try{
     if((*(*(*ogHeader).getRight()).getData()) == (*ADeleteValue)){
     (*(*ogHeader).getLeft()).setColor(0);
@@ -812,8 +814,9 @@ void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue, Node* ogHeader){
     }
     }
     catch(...){
-
+    
     }
+    */
     if((*ADeleteValue) > (*DeleteValue)){ // delete the node
 	//cout << "h3" << endl;
        delete (*header).getRight(); // deletes the node
@@ -866,7 +869,7 @@ void ACase2(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate ca
        //(*header).setRight(NULL);
     }
       else{
-	cout << "herez" << endl;
+	//	cout << "herez" << endl;
 	       Node* temp = new Node;
 	            Node* deletethis = new Node;
        (*deletethis) = (*(*header).getLeft());
