@@ -1,5 +1,5 @@
 /*
-RedAndBlackTree Insertion By Andrew Thomas 4/12/20 Mr.Galbriath C++ Class. Red And Black Tree. This will correctly build a red and black tree and will properally add nodes to the tree. one can also search for a value on the tree. 
+RedAndBlackTree Deletion By Andrew Thomas 5/8/20 Mr.Galbriath C++ Class. Red And Black Tree. This will correctly build a red and black tree and will properally add nodes to the tree. one can also search for a value on the tree. Finally, it can delte any node from the tree and rebuild the tree properally
 Sources:
 https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
 https://www.andrew.cmu.edu/user/mm6/95-771/examples/RedBlackTreeProject/dist/javadoc/redblacktreeproject/RedBlackTree.html
@@ -188,16 +188,17 @@ int main(){ // initialization of variables
       // cin.ignore();
       //cin.clear();
 
-      cout << "herez" << endl;
+      //  cout << "herez" << endl;
       //cout << (*SearchReturn((*header), deleteValue).getData()) << endl;
       Node* deleteNode = new Node;
       SearchReturn((*header), deleteValue, deleteNode);
-      cout << (*(*deleteNode).getData()) << endl;
+      //xcout << (*(*deleteNode).getData()) << endl;
       // cout << (*(*(*deleteNode).getRight()).getData()) << endl;
-      cout << "here" << endl;
+      // cout << "here" << endl;
       // DeleteOneChild(SearchReturn(header, deleteValue));
       DeleteOneChild(deleteNode, header);
       //  DeleteOneChild((*header).getRight(), header);
+      //  fixIssue(&header, (*header).getRight());
       cout << "deleted" << endl;
     }
 
@@ -488,24 +489,24 @@ void add (Node** header, Node* parent, int* in){
   }
      }
    }
-void ReplaceNode(Node* n, Node* child) {
-  (*child).setParent((*n).getParent());
+void ReplaceNode(Node* n, Node* child) { // this function replaces a node with another node
+  (*child).setParent((*n).getParent()); // set childs parent to nodes parent
   if (n == (*(*n).getParent()).getLeft()) {
-    (*(*n).getParent()).setLeft(child);
+    (*(*n).getParent()).setLeft(child); // child is to the left of node
   } else {
-    (*(*n).getParent()).setRight(child);
+    (*(*n).getParent()).setRight(child); // child is to the right of node
   }
 }
 
-void DeleteOneChild(Node* n, Node* header) {
+void DeleteOneChild(Node* n, Node* header) { // this funciton deletest the node n
   // Precondition: n has at most one non-leaf child.
-  cout << "lolz" << endl;
-   Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight();
+  //cout << "lolz" << endl;
+  Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight(); // saves child in separate node
   // Node* child = (*n).getRight();
   //Node* child = (*n).getRight();
   // assert(child);
    
-   if((*n).getLeft() == NULL && (*n).getRight() == NULL){
+  if((*n).getLeft() == NULL && (*n).getRight() == NULL){ // when there are no children
      /*    if((*(*getGrandparent(n)).getData()) <= (*(*(*n).getParent()).getData())){
        cout << "wow" << endl;
        (*getGrandparent(n)).setLeft(NULL);
@@ -534,86 +535,80 @@ void DeleteOneChild(Node* n, Node* header) {
      //cout << (*(*(*(*header).getRight()).getRight()).getData()) << endl;
      //(*(*header).getRight()).setRight(NULL);
      //return;
-     ACase1( header,  (*(*n).getParent()).getData(), (*n).getData());
+    ACase1( header,  (*(*n).getParent()).getData(), (*n).getData()); // do alternate case 1
  (*n).setParent(NULL);
  return;
    }
    
-   cout << "herezz" << endl;
-  ReplaceNode(n, child);
-  cout << "here";
-  if ((*n).getColor() == 1) {
-    cout << "there" << endl;
-    if ((*child).getColor() == 0) {
-      cout << "DN1" << endl;
-      (*child).setColor(1);
+  //cout << "herezz" << endl;
+   ReplaceNode(n, child); // replace the node with the child
+   //cout << "here";
+  if ((*n).getColor() == 1) { // if black do nothing
+    // cout << "there" << endl;
+    if ((*child).getColor() == 0) { // if child red
+      //cout << "DN1" << endl;
+      (*child).setColor(1); // child is now black
     } else {
-      cout << "D1";
-      DeleteCase1(child);
+      //  cout << "D1";
+      DeleteCase1(child); // if neither then do Actual Case 1
 
     }
   }
-  cout << "lol" << endl;
+  //cout << "lol" << endl;
   //temp
   // (*child).setLeft((*n).getRight());
   free(n);
 }
-void DeleteCase1(Node* n) {
-  cout << "1";
+void DeleteCase1(Node* n) { // case 1
+  // cout << "1";
   if ((*n).getParent() != nullptr) {
-    DeleteCase2(n);
+    DeleteCase2(n); // if has parent move to next case
   }
 }
-void DeleteCase2(Node* n) {
-  cout << "2";
-  Node* s = GetSibling(n);
+void DeleteCase2(Node* n) { // case 2
+  //cout << "2";
+  Node* s = GetSibling(n); // s is nodes sibling
 
-  if ((*s).getColor() == 0) {
-    (*(*n).getParent()).setColor(0);
-    (*s).setColor(1);
+  if ((*s).getColor() == 0) { // s is red
+    (*(*n).getParent()).setColor(0); // parent is now red
+    (*s).setColor(1); // s is now black
     if (n == (*(*n).getParent()).getLeft()) {
-      RotateLeft2((*n).getParent());
+      RotateLeft2((*n).getParent()); // rotate left
     } else {
-      RotateRight2((*n).getParent());
+      RotateRight2((*n).getParent()); // rotate right
     }
   }
   DeleteCase3(n);
 }
-void DeleteCase3(Node* n) {
-  cout << "3";
+void DeleteCase3(Node* n) { //case 3
+  //cout << "3";
   Node* s = GetSibling(n);
 
   if (((*(*n).getParent()).getColor() == 1) && ((*s).getColor() == 1) &&
       ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getColor() == 1)) {
-    (*s).setColor(0);
-    DeleteCase1((*n).getParent());
-  } else {
+    (*s).setColor(0); // s is red
+    DeleteCase1((*n).getParent()); // back to case 1
+  } else { // or move to case 4
     DeleteCase4(n);
   }
 }
-void DeleteCase4(Node* n) {
-cout << "4";
-  Node* s = GetSibling(n);
+void DeleteCase4(Node* n) { // case 4
+  //cout << "4";
+ Node* s = GetSibling(n); // s is sibling
   
   if (((*(*n).getParent()).getColor() == 0) && ((*s).getColor() == 1) &&
       ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getColor() == 1)) {
-    (*s).setColor(0);
-    (*(*n).getParent()).setColor(1);
+    (*s).setColor(0); // s is red
+    (*(*n).getParent()).setColor(1); // parent is black
   } else {
-    DeleteCase5(n);
+    DeleteCase5(n); // or move to case 5
   }
 }
-void DeleteCase5(Node* n) {
-cout << "5";
-  Node* s = GetSibling(n);
+void DeleteCase5(Node* n) { // case 5
+  //cout << "5";
+ Node* s = GetSibling(n); // s is sibling
 
-  // This if statement is trivial, due to case 2 (even though case 2 changed
-  // the sibling to a sibling's child, the sibling's child can't be red, since
-  // no red parent can have a red child).
- if ((*s).getColor() == 1) {
-    // The following statements just force the red to be on the left of the
-    // left of the parent, or right of the right, so case six will rotate
-    // correctly.
+  if ((*s).getColor() == 1) { // s is black
    if ((n == (*(*n).getParent()).getLeft()) && ((*(*s).getRight()).getColor() == 1) &&
        ((*(*s).getLeft()).getColor() == 0)) {
       // This last test is trivial too due to cases 2-4.
@@ -630,23 +625,23 @@ cout << "5";
   }
   DeleteCase6(n);
 }
-void DeleteCase6(Node* n) {
-  cout << "6";
-  Node* s = GetSibling(n);
+void DeleteCase6(Node* n) { // final case
+  //cout << "6";
+  Node* s = GetSibling(n); // s is sibling
 
-  (*s).setColor((*(*n).getParent()).getColor());
-  (*(*n).getParent()).setColor(1);
+  (*s).setColor((*(*n).getParent()).getColor()); // s color is parents color
+  (*(*n).getParent()).setColor(1); //n parent is now black
 
   if (n == (*(*n).getParent()).getLeft()) {
-    (*(*s).getRight()).setColor(1);
-        RotateLeft2((*n).getParent());
+    (*(*s).getRight()).setColor(1); // s right is now black
+    RotateLeft2((*n).getParent()); // rotate left
   } else {
-    (*(*s).getLeft()).setColor(1);
-        RotateRight2((*n).getParent());
+    (*(*s).getLeft()).setColor(1); // s left is now black
+    RotateRight2((*n).getParent()); // rotate right
   }
 }
 
-Node* GetSibling(Node* n) {
+Node* GetSibling(Node* n) { // gets the silbing
   Node* p = (*n).getParent();
 
   // No parent means no sibling.
@@ -661,7 +656,7 @@ Node* GetSibling(Node* n) {
   }
 }
 
-void RotateLeft2(Node* n) {
+void RotateLeft2(Node* n) { // roates left
   Node* nnew = (*n).getRight();
   Node* p = (*n).getParent();
   // assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
@@ -685,7 +680,7 @@ void RotateLeft2(Node* n) {
   (*nnew).setParent(p);
 }
 
-void RotateRight2(Node* n) {
+void RotateRight2(Node* n) { // rotates right
   Node* nnew = (*n).getLeft();
   Node* p = (*n).getParent();
   //assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
@@ -695,12 +690,12 @@ void RotateRight2(Node* n) {
   (*nnew).setRight(n);
   (*n).setParent(nnew);
 
-  // Handle other child/parent pointers.
+  
   if ((*n).getLeft() != nullptr) {
     (*(*n).getLeft()).setParent(n);
   }
 
-  // Initially n could be the root.
+  
   if (p != nullptr) {
     if (n == (*p).getLeft()) {
       (*p).setLeft(nnew);
@@ -756,91 +751,13 @@ Node* SearchReturn2(Node* header, int* searchData){ // this function searches th
     SearchReturn2((*header).getLeft(), searchData);
        }
 }
-/*
-void SearchReturnParent(Node header, int* searchData, Node* deleteNode){ // this function searches the tree for a node
-  //cout << "search" << endl;
-  if((*header.getData()) == (*searchData)){ // THIS IS THE NODE
-    //cout << "return this" << (*header.getData()) << endl;
-    //   Node* replace = new Node;
-    //return header;
-    (*deleteNode) = header;
-    // return replace;
-    //(*exists) = true;
-       }
-
-  if(header.getRight() != NULL && (*searchData) > (*header.getData())){ // not the node search rihgt
-    SearchReturn((*header.getRight()), searchData, deleteNode);
-       }
-  //if((*(*header).getData()) == (*searchData)){
-      //(*exists) = true;
-  //   }
-    if(header.getLeft() != NULL && (*searchData) <= (*header.getData())){ // not the node so search left
-      SearchReturn((*header.getLeft()), searchData, deleteNode);
-       }
-}
-
-/*						\
-&&
-      ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getCo\
-lor() == 1)) {
-    (*s).setColor(0);
-    (*(*n).getParent()).setColor(1);
-  } else {
-    DeleteCase5(n);
-  }
-}
-void DeleteCase5(Nod\
-&&
-      ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getCo\
-lor() == 1)) {
-    (*s).setColor(0);
-    (*(*n).getParent()).setColor(1);
-  } else {
-    DeleteCase5(n);
-  }
-}
-void DeleteCase5(Node* n) {
-*/
-void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){
+void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){ // alternate case 1
   cout << "inhere" << endl;
-  if((*(*header).getData()) == (*DeleteValue)){
+  if((*(*header).getData()) == (*DeleteValue)){ // THIS IS NODE
+    //(*header).setColor(0);
     // cout << "here" << endl;
-     cout << "h1" << endl;
-     //  if((*header).getRight() == NULL){
-     //cout << "here" << endl;
-     // }
-     /*      try{
-     
-     if((*header).getRight() != NULL && (*(*(*header).getRight()).getData()) == (*ADeleteValue)){
-	  (*header).setRight(NULL);
-	 
-	  return;
-	  	 }
-      }
-	  catch (...) {
-       cout << "her3e" << endl;
-	  }
-	  try{
-	  if((*header).getLeft() != NULL && (*(*(*header).getLeft()).getData()) == (*ADeleteValue)){
-	  (*header).setLeft(NULL);
-	 
-	 return;
-	  }
-	  }
-	  catch (...) {
-	    cout << "her3e" << endl;
-	  }
-  }
-     */
-	 // }catch (const std::exception& e) {
-	 
-	
-
-       
-     // if((*header).getRight() != NULL && (*(*(*header).getRight()).getData()) == (*ADeleteValue) || (*header).getLeft() != NULL && (*(*(*header).getLeft()).getData()) == (*ADeleteValue)){
-      //cout << "here" << endl;
-      //cout << "h2" << endl;
-      if((*ADeleteValue) > (*DeleteValue)){
+    // cout << "h1" << endl;
+     if((*ADeleteValue) > (*DeleteValue)){ // delete the node
 	//cout << "h3" << endl;
 	(*header).setRight(NULL);
     }
@@ -853,32 +770,7 @@ void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){
   }
   // cout << "fin" << endl;
 
-  // try{   
-  /*
-  if((*(*(*header).getLeft()).getData()) == (*DeleteValue)){
-    if((*ADeleteValue) > (*DeleteValue)){
-    (*(*header).getLeft()).setRight(NULL);
-    }
-    else{
-    (*(*header).getLeft()).setLeft(NULL);
-    }
-    return;
-  }
-  //}
-  //catch(...){
-  // }
-  //try
-  if((*(*(*header).getRight()).getData()) == (*DeleteValue)){
-    if((*ADeleteValue) > (*DeleteValue)){
-    (*(*header).getRight()).setRight(NULL);
-    }
-    else{
-    (*(*header).getRight()).setLeft(NULL);
-    }
-    return;
-  }
-  */
-  if((*DeleteValue) <= (*(*header).getData())){
+   if((*DeleteValue) <= (*(*header).getData())){
     ACase1((*header).getLeft(), DeleteValue, ADeleteValue);
     }
   else{
