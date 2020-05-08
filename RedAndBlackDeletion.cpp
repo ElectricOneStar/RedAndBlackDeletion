@@ -37,7 +37,7 @@ void setGrandparent(Node* n);
 Node* getGrandparent(Node* n);
 void add (Node** header, Node* parent, int* in);
 void ReplaceNode(Node* n, Node* child);
-void DeleteOneChild(Node* n);
+void DeleteOneChild(Node* n, Node* header);
 void DeleteCase1(Node* n);
 void DeleteCase2(Node* n);
 void DeleteCase3(Node* n);
@@ -48,8 +48,10 @@ Node* GetSibling(Node* n);
 void RotateRight2(Node* n);
 //Node* GetSibling(Node* n);
   void RotateLeft2(Node* n);
+Node* SearchReturn2(Node* header, int* searchData);
 //Node SearchReturn(Node header, int* searchData);
 void SearchReturn(Node header, int* searchData, Node* deleteNode);
+void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue);
 int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
@@ -191,10 +193,11 @@ int main(){ // initialization of variables
       Node* deleteNode = new Node;
       SearchReturn((*header), deleteValue, deleteNode);
       cout << (*(*deleteNode).getData()) << endl;
+      // cout << (*(*(*deleteNode).getRight()).getData()) << endl;
       cout << "here" << endl;
       // DeleteOneChild(SearchReturn(header, deleteValue));
-      DeleteOneChild(deleteNode);
-      // DeleteOneChild(header);
+      DeleteOneChild(deleteNode, header);
+      //  DeleteOneChild((*header).getRight(), header);
       cout << "deleted" << endl;
     }
 
@@ -494,14 +497,49 @@ void ReplaceNode(Node* n, Node* child) {
   }
 }
 
-void DeleteOneChild(Node* n) {
+void DeleteOneChild(Node* n, Node* header) {
   // Precondition: n has at most one non-leaf child.
   cout << "lolz" << endl;
    Node* child = ((*n).getRight() == nullptr) ? (*n).getLeft() : (*n).getRight();
   // Node* child = (*n).getRight();
   //Node* child = (*n).getRight();
   // assert(child);
-  
+   
+   if((*n).getLeft() == NULL && (*n).getRight() == NULL){
+     /*    if((*(*getGrandparent(n)).getData()) <= (*(*(*n).getParent()).getData())){
+       cout << "wow" << endl;
+       (*getGrandparent(n)).setLeft(NULL);
+     }
+     else{
+     (*getGrandparent(n)).setLeft(NULL);
+     cout << "wow2" << endl;
+     }
+     */
+     /* 
+     cout << "wow1" << endl;
+     Node* nn = new Node;
+     SearchReturn((*header),  (*(*n).getParent()).getData(), nn);
+     //void SearchReturn(Node header, int* searchData, Node* deleteNode)
+     cout << (*(*nn).getData()) << endl;
+     (*nn).setLeft(NULL);
+   (*nn).setRight(NULL);
+   cout << "wow2" << endl;
+*/
+     /*
+     cout << "wowx" << endl;
+     (*SearchReturn2( header, (*(*n).getParent()).getData())).setLeft(NULL);
+     (*SearchReturn2( header, (*(*n).getParent()).getData())).setRight(NULL);
+     cout << "wowz" << endl;
+     */
+     //cout << (*(*(*(*header).getRight()).getRight()).getData()) << endl;
+     //(*(*header).getRight()).setRight(NULL);
+     //return;
+     ACase1( header,  (*(*n).getParent()).getData(), (*n).getData());
+ (*n).setParent(NULL);
+ return;
+   }
+   
+   cout << "herezz" << endl;
   ReplaceNode(n, child);
   cout << "here";
   if ((*n).getColor() == 1) {
@@ -696,6 +734,51 @@ void SearchReturn(Node header, int* searchData, Node* deleteNode){ // this funct
        }
 }
 
+Node* SearchReturn2(Node* header, int* searchData){ // this function searches the tree for a node
+  //cout << "search" << endl;
+  if((*(*header).getData()) == (*searchData)){ // THIS IS THE NODE
+    //cout << "return this" << (*header.getData()) << endl;
+    //   Node* replace = new Node;
+    //return header;
+    // (*deleteNode) = header;
+    return header;
+    // return replace;
+    //(*exists) = true;
+       }
+
+  if((*header).getRight() != NULL && (*searchData) > (*(*header).getData())){ // not the node search rihgt
+    SearchReturn2((*header).getRight(), searchData);
+       }
+  //if((*(*header).getData()) == (*searchData)){
+      //(*exists) = true;
+  //   }
+  if((*header).getLeft() != NULL && (*searchData) <= (*(*header).getData())){ // not the node so search left
+    SearchReturn2((*header).getLeft(), searchData);
+       }
+}
+/*
+void SearchReturnParent(Node header, int* searchData, Node* deleteNode){ // this function searches the tree for a node
+  //cout << "search" << endl;
+  if((*header.getData()) == (*searchData)){ // THIS IS THE NODE
+    //cout << "return this" << (*header.getData()) << endl;
+    //   Node* replace = new Node;
+    //return header;
+    (*deleteNode) = header;
+    // return replace;
+    //(*exists) = true;
+       }
+
+  if(header.getRight() != NULL && (*searchData) > (*header.getData())){ // not the node search rihgt
+    SearchReturn((*header.getRight()), searchData, deleteNode);
+       }
+  //if((*(*header).getData()) == (*searchData)){
+      //(*exists) = true;
+  //   }
+    if(header.getLeft() != NULL && (*searchData) <= (*header.getData())){ // not the node so search left
+      SearchReturn((*header.getLeft()), searchData, deleteNode);
+       }
+}
+
 /*						\
 &&
       ((*(*s).getLeft()).getColor() == 1) && ((*(*s).getRight()).getCo\
@@ -718,3 +801,88 @@ lor() == 1)) {
 }
 void DeleteCase5(Node* n) {
 */
+void ACase1(Node* header, int*  DeleteValue, int* ADeleteValue){
+  cout << "inhere" << endl;
+  if((*(*header).getData()) == (*DeleteValue)){
+    // cout << "here" << endl;
+     cout << "h1" << endl;
+     //  if((*header).getRight() == NULL){
+     //cout << "here" << endl;
+     // }
+     /*      try{
+     
+     if((*header).getRight() != NULL && (*(*(*header).getRight()).getData()) == (*ADeleteValue)){
+	  (*header).setRight(NULL);
+	 
+	  return;
+	  	 }
+      }
+	  catch (...) {
+       cout << "her3e" << endl;
+	  }
+	  try{
+	  if((*header).getLeft() != NULL && (*(*(*header).getLeft()).getData()) == (*ADeleteValue)){
+	  (*header).setLeft(NULL);
+	 
+	 return;
+	  }
+	  }
+	  catch (...) {
+	    cout << "her3e" << endl;
+	  }
+  }
+     */
+	 // }catch (const std::exception& e) {
+	 
+	
+
+       
+     // if((*header).getRight() != NULL && (*(*(*header).getRight()).getData()) == (*ADeleteValue) || (*header).getLeft() != NULL && (*(*(*header).getLeft()).getData()) == (*ADeleteValue)){
+      //cout << "here" << endl;
+      //cout << "h2" << endl;
+      if((*ADeleteValue) > (*DeleteValue)){
+	//cout << "h3" << endl;
+	(*header).setRight(NULL);
+    }
+      else{
+      //cout << "h4" << endl;
+    (*header).setLeft(NULL);
+    }
+      //  cout << "h5" << endl;
+      return;
+  }
+  // cout << "fin" << endl;
+
+  // try{   
+  /*
+  if((*(*(*header).getLeft()).getData()) == (*DeleteValue)){
+    if((*ADeleteValue) > (*DeleteValue)){
+    (*(*header).getLeft()).setRight(NULL);
+    }
+    else{
+    (*(*header).getLeft()).setLeft(NULL);
+    }
+    return;
+  }
+  //}
+  //catch(...){
+  // }
+  //try
+  if((*(*(*header).getRight()).getData()) == (*DeleteValue)){
+    if((*ADeleteValue) > (*DeleteValue)){
+    (*(*header).getRight()).setRight(NULL);
+    }
+    else{
+    (*(*header).getRight()).setLeft(NULL);
+    }
+    return;
+  }
+  */
+  if((*DeleteValue) <= (*(*header).getData())){
+    ACase1((*header).getLeft(), DeleteValue, ADeleteValue);
+    }
+  else{
+    ACase1((*header).getRight(), DeleteValue, ADeleteValue);
+  }
+  
+}
